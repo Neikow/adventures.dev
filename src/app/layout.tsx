@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Head from "next/head";
 import React from "react";
 import { NextAuthProvider } from "@/components/auth/NextAuthProvider";
 
@@ -28,13 +27,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-        <title>Adventures</title>
-        <link
-          href="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css"
-          rel="stylesheet"
-        />
-      </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

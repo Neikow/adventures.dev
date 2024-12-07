@@ -21,6 +21,7 @@
           "message": "Please use Link from the custom UI."
         }
       ]
-    }]
+    }],
+    "id-denylist": ["error", "Date", "data", "err", "e", "cb", "callback"]
   }
 }

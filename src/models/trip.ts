@@ -1,23 +1,41 @@
 import { Place } from "@/models/place";
 import { trips } from "@/db/schema/trip";
+import { TZDate } from "@date-fns/tz";
 
 export type TripSchema = typeof trips.$inferSelect;
 
 export class Trip {
   public places: Place[] = [];
+  public id: number;
+  public name: string;
+  public uuid: string;
 
-  constructor(
-    public id: number,
-    public name: string,
-    public uuid: string,
+  public readonly createdAt?: TZDate;
+  public readonly updatedAt?: TZDate;
 
-    public startDateOverride?: Date,
-    public endDateOverride?: Date,
-  ) {
+  public startDateOverride?: TZDate;
+  public endDateOverride?: TZDate;
+
+  constructor(options: {
+    id: number;
+    name: string;
+    uuid: string;
+    createdAt?: TZDate;
+    updatedAt?: TZDate;
+    startDateOverride?: TZDate;
+    endDateOverride?: TZDate;
+  }) {
     this.places = [];
+    this.id = options.id;
+    this.name = options.name;
+    this.uuid = options.uuid;
+    this.startDateOverride = options.startDateOverride;
+    this.endDateOverride = options.endDateOverride;
+    this.createdAt = options.createdAt;
+    this.updatedAt = options.updatedAt;
   }
 
-  addLocation(newPlace: Place) {
+  addPlace(newPlace: Place) {
     const insertIndex = this.places.findIndex(
       (place) => newPlace.date < place.date,
     );
@@ -58,7 +76,19 @@ export class Trip {
     return this.endDateOverride ?? this.places[this.places.length - 1].date;
   }
 
-  static fromORM(data: TripSchema) {
-    return new Trip(data.id, data.name, data.uuid);
+  static fromORM(schema: TripSchema) {
+    return new Trip({
+      id: schema.id,
+      name: schema.name,
+      uuid: schema.uuid,
+      createdAt: new TZDate(schema.createdAt),
+      updatedAt: new TZDate(schema.updatedAt),
+      startDateOverride: schema.startDateOverride
+        ? new TZDate(schema.startDateOverride)
+        : undefined,
+      endDateOverride: schema.endDateOverride
+        ? new TZDate(schema.endDateOverride)
+        : undefined,
+    });
   }
 }

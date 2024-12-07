@@ -23,11 +23,11 @@ function LocationCard({
   return (
     <button
       className={
-        "my-8 p-2 border border-zinc-700 text-start rounded-md transition-all hover:bg-zinc-900 hover:-translate-y-1"
+        "border-zinc-700 hover:bg-zinc-900 my-8 rounded-md border p-2 text-start transition-all hover:-translate-y-1"
       }
       onClick={() => onClick(location)}
     >
-      <h2 className={"text-4xl font-semibold font-mono pb-2"}>{title}</h2>
+      <h2 className={"pb-2 font-mono text-4xl font-semibold"}>{title}</h2>
       <span className={"font-mono"}>{locationToString(location)}</span>
       <p className={"text-zinc-400 pt-2"}>{description}</p>
     </button>
@@ -35,7 +35,7 @@ function LocationCard({
 }
 
 export default function Home() {
-  const mapRef = useRef<mapboxgl.Map>();
+  const mapRef = useRef<mapboxgl.Map>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
 
   const { status } = useSession();
@@ -69,13 +69,13 @@ export default function Home() {
   );
 
   return (
-    <div className="grid grid-cols-5 h-screen font-sans">
+    <div className="grid h-screen grid-cols-5 font-sans">
       <main className={"col-span-2 overflow-scroll"}>
-        <header className={"sticky p-4 top-0 z-50 bg-background"}>
-          <h1 className={"text-4xl font-mono font-semibold"}>Adventures</h1>
-          <nav className={"flex gap-8 font-mono text-xl mt-2"}>
+        <header className={"bg-background sticky top-0 z-50 p-4"}>
+          <h1 className={"font-mono text-4xl font-semibold"}>Adventures</h1>
+          <nav className={"mt-2 flex gap-8 font-mono text-xl"}>
             {status === "authenticated" && (
-              <Link className={"hover:underline"} href={"/admin"}>
+              <Link className={"hover:underline"} href={"/dashboard"}>
                 Admin
               </Link>
             )}

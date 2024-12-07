@@ -2,18 +2,13 @@
 
 import { useSession } from "next-auth/react";
 import React from "react";
-import { Loading } from "@/components/lib/ui/loading/PageLoading";
-import { UnauthenticatedDashboard } from "@/app/dashboard/unauthenticated";
+import { PageLoading } from "@/components/lib/ui/loading/PageLoading";
 import { Dashboard } from "./dashboard";
 
-export default function Admin() {
+export default function DashboardPage() {
   const { status } = useSession();
 
-  if (status === "loading") return <Loading />;
-
-  if (status === "unauthenticated") {
-    return <UnauthenticatedDashboard />;
-  }
+  if (status === "loading") return <PageLoading />;
 
   return <Dashboard />;
 }

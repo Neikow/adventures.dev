@@ -8,6 +8,20 @@
       "when": 1732483144783,
       "tag": "0000_abandoned_prima",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1733535977098,
+      "tag": "0001_broken_cassandra_nova",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1733536098760,
+      "tag": "0002_tricky_whistler",
+      "breakpoints": true
     }
   ]
 }

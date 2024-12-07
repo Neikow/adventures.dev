@@ -2,7 +2,12 @@ import { AuthOptions } from "next-auth";
 import Github from "next-auth/providers/github";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "@/db";
-import { accounts, sessions, users, verificationTokens } from "@/db/schema";
+import {
+  accounts,
+  sessions,
+  users,
+  verificationTokens,
+} from "@/db/schema/auth";
 
 export const authOptions: AuthOptions = {
   adapter: DrizzleAdapter(db, {

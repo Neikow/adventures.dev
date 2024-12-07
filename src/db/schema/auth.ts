@@ -1,3 +1,4 @@
+import { AdapterAccountType } from "@auth/core/adapters";
 import {
   boolean,
   timestamp,
@@ -5,9 +6,7 @@ import {
   text,
   primaryKey,
   integer,
-  varchar,
 } from "drizzle-orm/pg-core";
-import { AdapterAccountType } from "@auth/core/adapters";
 
 export const users = pgTable("user", {
   id: text("id")
@@ -36,11 +35,11 @@ export const accounts = pgTable(
     id_token: text("id_token"),
     session_state: text("session_state"),
   },
-  (account) => ({
-    compoundKey: primaryKey({
+  (account) => [
+    primaryKey({
       columns: [account.provider, account.providerAccountId],
     }),
-  }),
+  ],
 );
 
 export const sessions = pgTable("session", {
@@ -58,11 +57,11 @@ export const verificationTokens = pgTable(
     token: text("token").notNull(),
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
-  (verificationToken) => ({
-    compositePk: primaryKey({
+  (verificationToken) => [
+    primaryKey({
       columns: [verificationToken.identifier, verificationToken.token],
     }),
-  }),
+  ],
 );
 
 export const authenticators = pgTable(
@@ -79,16 +78,9 @@ export const authenticators = pgTable(
     credentialBackedUp: boolean("credentialBackedUp").notNull(),
     transports: text("transports"),
   },
-  (authenticator) => ({
-    compositePK: primaryKey({
+  (authenticator) => [
+    primaryKey({
       columns: [authenticator.userId, authenticator.credentialID],
     }),
-  }),
+  ],
 );
-
-export const todoTable = pgTable("todos", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  title: varchar().notNull(),
-  status: integer().default(0),
-  createdAt: varchar().notNull(),
-});

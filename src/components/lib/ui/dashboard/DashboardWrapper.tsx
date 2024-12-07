@@ -24,7 +24,11 @@ export function DashboardWrapper({
       {!hideGreeting && (
         <p className={"font-mono text-xl"}>Hello {username} !</p>
       )}
-      <main className={"border-zinc-200 mt-8 h-full rounded-xl border p-4"}>
+      <main
+        className={
+          "border-zinc-200 mt-8 box-border flex min-h-0 flex-1 flex-col rounded-xl border p-4"
+        }
+      >
         {children}
       </main>
     </div>

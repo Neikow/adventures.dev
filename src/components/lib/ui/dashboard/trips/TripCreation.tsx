@@ -37,7 +37,9 @@ export function TripCreation() {
 
   return (
     <form
-      className={"flex w-full flex-col items-center justify-center space-y-4"}
+      className={
+        "flex h-full w-full flex-col items-center justify-center space-y-4"
+      }
       onSubmit={handleSubmit(onValid)}
     >
       <TextInput

@@ -4,13 +4,13 @@ import { Place } from "@/models/place";
 import { Coordinates } from "@/models/coordinates";
 
 test("[Trip] Should create a named trip with a starting location", () => {
-  const trip = new Trip("My trip");
+  const trip = new Trip(1, "My trip", "uuid");
 
   expect(trip.name).toBe("My trip");
 });
 
 test("[Trip] Should add a location to the trip", () => {
-  const trip = new Trip("My trip");
+  const trip = new Trip(1, "My trip", "uuid");
   expect(trip.places.length).toBe(0);
 
   trip.addLocation(
@@ -22,7 +22,7 @@ test("[Trip] Should add a location to the trip", () => {
 });
 
 test("[Trip] Should calculate the total distance between locations", () => {
-  const trip = new Trip("My trip");
+  const trip = new Trip(1, "My trip", "uuid");
 
   trip.addLocation(new Place("", "", [], new Coordinates(5, 10), new Date()));
   trip.addLocation(new Place("", "", [], new Coordinates(15, 20), new Date()));
@@ -31,7 +31,7 @@ test("[Trip] Should calculate the total distance between locations", () => {
 });
 
 test("[Trip] Should calculate the total duration between locations", () => {
-  const trip = new Trip("My trip");
+  const trip = new Trip(1, "My trip", "uuid");
 
   const dates = [
     new Date("2024-11-26"),
@@ -49,7 +49,7 @@ test("[Trip] Should calculate the total duration between locations", () => {
 });
 
 test("[Trip] Should insert the place at the right index", () => {
-  const trip = new Trip("My trip");
+  const trip = new Trip(1, "My trip", "uuid");
 
   const places: [Date, string][] = [
     [new Date("2024-11-26"), "Location 1"],
@@ -66,4 +66,52 @@ test("[Trip] Should insert the place at the right index", () => {
   expect(trip.places[1].name).toBe("Location 4");
   expect(trip.places[2].name).toBe("Location 2");
   expect(trip.places[3].name).toBe("Location 1");
+});
+
+test("[Trip] Should create a trip from the ORM schema", () => {
+  const trip = Trip.fromORM({
+    id: 1,
+    name: "My trip",
+    uuid: "uuid",
+  });
+
+  expect(trip.name).toBe("My trip");
+});
+
+test("[Trip] Should return the trip start and end date", () => {
+  const trip = new Trip(1, "My trip", "uuid");
+
+  const places: [Date, string][] = [
+    [new Date("2024-11-24"), "Location 1"],
+    [new Date("2024-11-26"), "Location 2"],
+  ];
+
+  places.forEach(([date, name]) => {
+    trip.addLocation(new Place(name, "", [], new Coordinates(0, 0), date));
+  });
+
+  expect(trip.startDate).toEqual(new Date("2024-11-24"));
+  expect(trip.endDate).toEqual(new Date("2024-11-26"));
+});
+
+test("[Trip] Should create a trip with start and end date overrides", () => {
+  const trip = new Trip(
+    1,
+    "My trip",
+    "uuid",
+    new Date("2024-11-26"),
+    new Date("2024-11-27"),
+  );
+
+  const places: [Date, string][] = [
+    [new Date("2024-11-26"), "Location 1"],
+    [new Date("2024-11-24"), "Location 2"],
+  ];
+
+  places.forEach(([date, name]) => {
+    trip.addLocation(new Place(name, "", [], new Coordinates(0, 0), date));
+  });
+
+  expect(trip.startDate).toEqual(new Date("2024-11-26"));
+  expect(trip.endDate).toEqual(new Date("2024-11-27"));
 });

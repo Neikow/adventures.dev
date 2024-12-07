@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { db } from "@/db";
 import { trips } from "@/db/schema/trip";
 import { eq } from "drizzle-orm";
-import { DashboardWrapper } from "@/components/lib/ui/dashboard/wrapper";
+import { DashboardWrapper } from "@/components/lib/ui/dashboard/DashboardWrapper";
 import { BackButton } from "@/components/lib/navigation/BackButton";
 import { Link } from "@/components/lib/navigation/Link";
 

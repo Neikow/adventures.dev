@@ -1,9 +1,19 @@
 import { Place } from "@/models/place";
+import { trips } from "@/db/schema/trip";
+
+export type TripSchema = typeof trips.$inferSelect;
 
 export class Trip {
   public places: Place[] = [];
 
-  constructor(public name: string) {
+  constructor(
+    public id: number,
+    public name: string,
+    public uuid: string,
+
+    public startDateOverride?: Date,
+    public endDateOverride?: Date,
+  ) {
     this.places = [];
   }
 
@@ -38,5 +48,17 @@ export class Trip {
       duration += Math.abs(date1.getTime() - date2.getTime());
     }
     return duration;
+  }
+
+  get startDate() {
+    return this.startDateOverride ?? this.places[0].date;
+  }
+
+  get endDate() {
+    return this.endDateOverride ?? this.places[this.places.length - 1].date;
+  }
+
+  static fromORM(data: TripSchema) {
+    return new Trip(data.id, data.name, data.uuid);
   }
 }

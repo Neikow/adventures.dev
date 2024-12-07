@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { BackButton } from "@/components/lib/navigation/BackButton";
-import { TripCreation } from "@/app/dashboard/trips/TripCreation";
-import { DashboardWrapper } from "@/components/lib/ui/dashboard/wrapper";
+import { DashboardWrapper } from "@/components/lib/ui/dashboard/DashboardWrapper";
+import React from "react";
+import { TripCreation } from "@/components/lib/ui/dashboard/trips/TripCreation";
 
 export const metadata: Metadata = {
   title: "Create a new trip",

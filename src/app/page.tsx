@@ -1,9 +1,9 @@
 "use client";
-import { useRef, useEffect, useMemo } from "react";
+import React from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
+import { Link } from "@/components/lib/navigation/Link";
 
 function locationToString(location: [number, number]) {
   return `${location[1].toFixed(3)}°N ${location[0].toFixed(3)}°E`;
@@ -35,12 +35,12 @@ function LocationCard({
 }
 
 export default function Home() {
-  const mapRef = useRef<mapboxgl.Map>(null);
-  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const mapRef = React.useRef<mapboxgl.Map>(null);
+  const mapContainerRef = React.useRef<HTMLDivElement>(null);
 
   const { status } = useSession();
 
-  useEffect(() => {
+  React.useEffect(() => {
     mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!;
     mapRef.current = new mapboxgl.Map({
       container: mapContainerRef.current!,
@@ -54,14 +54,14 @@ export default function Home() {
     };
   }, []);
 
-  const getRandomLocation = (): [number, number] => {
-    return [Math.random() * 360 - 180, Math.random() * 180 - 90];
+  const getRandomLocation = (i: number): [number, number] => {
+    return [i * 40 - 180, i * 20 - 90];
   };
 
-  const locations = useMemo(
+  const locations = React.useMemo(
     () =>
-      Array.from({ length: 10 }, (_, i) => ({
-        location: getRandomLocation(),
+      Array.from({ length: 9 }, (_, i) => ({
+        location: getRandomLocation(i),
         title: `Location ${i}, Country ${i}`,
         description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`,
       })),
@@ -74,23 +74,11 @@ export default function Home() {
         <header className={"bg-background sticky top-0 z-50 p-4"}>
           <h1 className={"font-mono text-4xl font-semibold"}>Adventures</h1>
           <nav className={"mt-2 flex gap-8 font-mono text-xl"}>
-            {status === "authenticated" && (
-              <Link className={"hover:underline"} href={"/dashboard"}>
-                Admin
-              </Link>
-            )}
-            <Link className={"hover:underline"} href="/trips">
-              Trips
-            </Link>
-            <Link className={"hover:underline"} href={"/places"}>
-              Places
-            </Link>
-            <Link className={"hover:underline"} href="/gallery">
-              Gallery
-            </Link>
-            <Link className={"hover:underline"} href="/about">
-              About
-            </Link>
+            {status === "authenticated" && <Link href="/dashboard">Admin</Link>}
+            <Link href="/trips">Trips</Link>
+            <Link href="/places">Places</Link>
+            <Link href="/gallery">Gallery</Link>
+            <Link href="/about">About</Link>
           </nav>
         </header>
         <div className={"p-4"}>

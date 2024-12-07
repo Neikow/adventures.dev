@@ -1,17 +1,14 @@
-import { useSession } from "next-auth/react";
-import Link from "next/link";
+import { Link } from "@/components/lib/navigation/Link";
+import React from "react";
+import { DashboardWrapper } from "@/components/lib/ui/dashboard/wrapper";
 
-export const Dashboard = () => {
-  const { data } = useSession();
-  const username = data!.user?.name;
-
+export async function Dashboard() {
   return (
-    <div className={"h-screen p-4"}>
-      <h1 className={"font-mono text-4xl font-semibold"}>Dashboard</h1>
-      <p className={"font-mono text-xl"}>Hello {username} !</p>
-      <main className={"border-zinc-200 mt-4 rounded-xl border p-4"}>
-        <Link href={"dashboard/trips"}>Start a new Trip !</Link>
-      </main>
-    </div>
+    <DashboardWrapper
+      topNavigation={<Link href={"/"}>{"< Go Home"}</Link>}
+      title={"Dashboard"}
+    >
+      <Link href={"dashboard/trips"}>Start a new Trip !</Link>
+    </DashboardWrapper>
   );
-};
+}

@@ -4,6 +4,7 @@ import { FormErrors } from "@/hooks/useSetErrors";
 import { FieldValues } from "react-hook-form";
 import { trips } from "@/db/schema/trip";
 import { db } from "@/db";
+import { captureException, SentryError } from "@sentry/core";
 
 export interface CreateTripFormValues {
   name: string;
@@ -28,7 +29,7 @@ export type FormSubmitResult<
 export type CreateTripPayload = FormSubmitPayload<CreateTripFormValues>;
 export type CreateTripResult = FormSubmitResult<
   {
-    id: string;
+    id: number;
     uuid: string;
     name: string;
     redirectUrl: string;
@@ -54,22 +55,21 @@ export async function createTripAction(
     return {
       success: true,
       data: {
-        id: "123",
-        uuid: "123",
-        redirectUrl: `/trip/123`,
+        id: trip.id,
+        uuid: trip.uuid,
+        redirectUrl: `/dashboard/trips/${trip.uuid}`,
         name,
       },
     };
   } catch (e) {
-    console.error(e);
-  }
-
-  return {
-    success: false,
-    errors: {
-      name: {
-        message: "Name already used",
+    captureException(e as SentryError);
+    return {
+      success: false,
+      errors: {
+        name: {
+          message: "An error occurred while creating the trip",
+        },
       },
-    },
-  };
+    };
+  }
 }

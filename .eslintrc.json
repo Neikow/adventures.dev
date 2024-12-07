@@ -2,6 +2,26 @@
   "extends": ["next/core-web-vitals", "next/typescript","plugin:prettier/recommended"],
   "rules": {
     "no-alert": "error",
-    "no-console": "error"
+    "no-console": "error",
+    "no-restricted-imports": ["error", {
+      "paths": [
+        {
+          "name": "react",
+          "importNames": [
+            "useEffect",
+            "useState",
+            "useCallback",
+            "useMemo",
+            "useRef",
+            "ReactNode"
+          ],
+          "message": "Please use the default import from \"React\"."
+        },
+        {
+          "name": "next/link",
+          "message": "Please use Link from the custom UI."
+        }
+      ]
+    }]
   }
 }

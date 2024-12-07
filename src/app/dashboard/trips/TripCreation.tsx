@@ -9,7 +9,8 @@ import {
 } from "@/app/dashboard/trips/actions";
 import { useSetErrors } from "@/hooks/useSetErrors";
 import { useRouter } from "next/navigation";
-import { MAX_TRIP_NAME_LENGTH } from "@/db/schema/trip";
+import { MAX_TRIP_NAME_LENGTH, trips } from "@/db/schema/trip";
+import React from "react";
 
 export function TripCreation() {
   const { replace } = useRouter();
@@ -21,16 +22,26 @@ export function TripCreation() {
   } = useForm<CreateTripFormValues>();
   const setErrors = useSetErrors(setError);
 
-  const onValid = async (data: CreateTripFormValues) => {
-    const result = await createTripAction(data);
-    if (!result.success) {
-      setErrors(result.errors);
-    }
-  };
+  const onValid = React.useCallback(
+    async (data: CreateTripFormValues) => {
+      const result = await createTripAction(data);
+      if (!result.success) {
+        setErrors(result.errors);
+        return;
+      }
+
+      replace(result.data.redirectUrl);
+    },
+    [replace, setErrors],
+  );
 
   return (
-    <form onSubmit={handleSubmit(onValid)}>
+    <form
+      className={"flex w-full flex-col items-center justify-center space-y-4"}
+      onSubmit={handleSubmit(onValid)}
+    >
       <TextInput
+        className={"w-full text-center"}
         inputSize={"xl"}
         autoComplete={"off"}
         {...register("name", {
@@ -52,8 +63,8 @@ export function TripCreation() {
         placeholder={"Trip name"}
       />
 
-      <Button disabled={!isValid} type={"submit"}>
-        Submit
+      <Button className={"text-2xl"} disabled={!isValid} type={"submit"}>
+        {"Submit >"}
       </Button>
     </form>
   );

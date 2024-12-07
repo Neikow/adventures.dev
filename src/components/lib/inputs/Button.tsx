@@ -10,7 +10,7 @@ export const Button = React.forwardRef(function Button(
   return (
     <button
       className={twMerge(
-        "disabled:cursor-not-allowed disabled:opacity-50",
+        "font-mono disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
       ref={ref}

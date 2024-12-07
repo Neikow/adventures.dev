@@ -25,7 +25,7 @@ export const TextInput = React.forwardRef(function TextInput(
   } = props;
 
   return (
-    <div className={"relative flex flex-col"}>
+    <div className={"relative flex w-full flex-col"}>
       {label && (
         <label
           htmlFor={id}
@@ -40,9 +40,7 @@ export const TextInput = React.forwardRef(function TextInput(
         ref={ref}
         className={twMerge(
           "bg-transparent font-mono outline-none",
-          inputSize === "default"
-            ? "p-2"
-            : "-mx-4 mb-4 p-3 text-6xl font-normal",
+          inputSize === "default" ? "p-2" : "mb-4 p-3 text-6xl font-normal",
           className,
         )}
         {...rest}

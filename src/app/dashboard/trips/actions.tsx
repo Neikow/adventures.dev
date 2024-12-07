@@ -46,13 +46,10 @@ export async function createTripAction(
   try {
     const [trip] = await db
       .insert(trips)
-      // @ts-expect-error - id is required but it is auto-generated
       .values({
         name: name,
       })
       .returning();
-
-    console.log(trip);
 
     return {
       success: true,

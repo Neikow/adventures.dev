@@ -1,10 +1,10 @@
-import { pgTable, text, varchar } from "drizzle-orm/pg-core";
+import { integer, pgTable, text, varchar } from "drizzle-orm/pg-core";
 import { generateUUID, UUID_LENGTH } from "@/lib/uuidGeneration";
 
 export const MAX_TRIP_NAME_LENGTH = 127;
 
 export const trips = pgTable("trip", {
-  id: text("id").primaryKey(),
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   uuid: varchar("uid", {
     length: UUID_LENGTH,
   })

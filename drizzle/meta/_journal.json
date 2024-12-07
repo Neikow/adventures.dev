@@ -29,6 +29,13 @@
       "when": 1733537010352,
       "tag": "0003_cultured_black_panther",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1733537868451,
+      "tag": "0004_acoustic_redwing",
+      "breakpoints": true
     }
   ]
 }

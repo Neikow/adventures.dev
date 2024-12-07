@@ -1,6 +1,8 @@
 import { Place } from "@/models/place";
 import { trips } from "@/db/schema/trip";
 import { TZDate } from "@date-fns/tz";
+import { intervalToDuration } from "date-fns";
+import { addDurations } from "@/utils/duration";
 
 export type TripSchema = typeof trips.$inferSelect;
 
@@ -59,13 +61,23 @@ export class Trip {
     return distance;
   }
 
-  get totalDuration() {
-    let duration: number = 0;
-    for (let i = 0; i < this.places.length - 1; i++) {
-      const [date1, date2] = [this.places[i].date, this.places[i + 1].date];
-      duration += Math.abs(date1.getTime() - date2.getTime());
+  get duration() {
+    const startDate = this.startDate;
+    const endDate = this.endDate;
+
+    const tripDuration = intervalToDuration({
+      start: startDate,
+      end: endDate,
+    });
+
+    const lastPlace = this.places[this.places.length - 1];
+    if (lastPlace.stayDuration && !this.endDateOverride) {
+      // we want to add the last stay duration to the trip duration
+      // only if the end date was not manually set
+      return addDurations(tripDuration, lastPlace.stayDuration);
     }
-    return duration;
+
+    return tripDuration;
   }
 
   get startDate() {

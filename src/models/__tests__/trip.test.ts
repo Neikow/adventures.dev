@@ -27,7 +27,7 @@ const getPlace = (options?: Partial<Place>) => {
 };
 
 test("[Trip] Should create a named trip with a starting location", () => {
-  const trip = getTrip();
+  const trip = getTrip({ name: "My trip" });
 
   expect(trip.name).toBe("My trip");
 });
@@ -72,9 +72,25 @@ test("[Trip] Should calculate the total duration between locations", () => {
     trip.addPlace(getPlace({ date }));
   });
 
-  const duration = 3 * 24 * 60 * 60 * 1000; // 3 days in milliseconds
+  expect(trip.duration).toStrictEqual({ days: 3 });
+});
 
-  expect(trip.totalDuration).toBe(duration);
+test("[Trip] Should calculate the total duration between locations with a stay duration", () => {
+  const trip = getTrip();
+
+  const dates = [
+    new TZDate("2024-11-26"),
+    new TZDate("2024-11-27"),
+    new TZDate("2024-11-29"),
+  ];
+
+  dates.forEach((date) => {
+    trip.addPlace(getPlace({ date }));
+  });
+
+  trip.places[trip.places.length - 1].stayDuration = { days: 2 };
+
+  expect(trip.duration).toStrictEqual({ days: 5 });
 });
 
 test("[Trip] Should insert the place at the right index", () => {

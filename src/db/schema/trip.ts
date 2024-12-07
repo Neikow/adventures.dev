@@ -9,8 +9,9 @@ export const trips = pgTable("trip", {
     length: UUID_LENGTH,
   })
     .unique()
+    .notNull()
     .$defaultFn(generateUUID),
   name: varchar("name", {
     length: MAX_TRIP_NAME_LENGTH,
-  }),
+  }).notNull(),
 });

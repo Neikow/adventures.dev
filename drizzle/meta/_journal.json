@@ -22,6 +22,13 @@
       "when": 1733536098760,
       "tag": "0002_tricky_whistler",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1733537010352,
+      "tag": "0003_cultured_black_panther",
+      "breakpoints": true
     }
   ]
 }
